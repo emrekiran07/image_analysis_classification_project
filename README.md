@@ -1,4 +1,5 @@
 1. Introduction
+
 In this project, we were given the task of designing a program that could automatically
 classify the digits in CAPTCHA images. The CAPTCHA images
 contain three handwritten digits, often distorted with noise, overlapping strokes,
@@ -16,7 +17,7 @@ using a classifier. The final evaluation was done after our implementation. From
 our initial experiments and inspection, the most main challenges we identified were
 digit segmentation (especially when digits are touching or overlapping) and robust
 feature extraction under varying transformations and noise.
-2. Method
+3. Method
 To begin processing the images, we first designed a preprocessing step to reduce
 noise and highlight the digits more clearly. One interesting part of this was applying
 a filtering technique in the frequency domain using the Fourier Transform.
@@ -58,7 +59,7 @@ Hu moments even if it appeared at a different angle or size. We extracted nine H
 moments and combined them with six shape features to create a 15-dimensional
 feature vector for each digit. With three digits per image, this resulted in a 45-
 dimensional feature vector for the full image.
-3. Implementation
+4. Implementation
 All the steps mentioned above were implemented as a modular pipeline in MATLAB.
 The preprocessing, segmentation, and feature extraction were handled inside
 the FeatureExtraction.m script. This script takes a CAPTCHA image and returns
