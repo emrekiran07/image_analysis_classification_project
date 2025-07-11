@@ -1,5 +1,4 @@
 1. Introduction
-
 In this project, we were given the task of designing a program that could automatically
 classify the digits in CAPTCHA images. The CAPTCHA images
 contain three handwritten digits, often distorted with noise, overlapping strokes,
@@ -17,7 +16,7 @@ using a classifier. The final evaluation was done after our implementation. From
 our initial experiments and inspection, the most main challenges we identified were
 digit segmentation (especially when digits are touching or overlapping) and robust
 feature extraction under varying transformations and noise.
-3. Method
+2. Method
 To begin processing the images, we first designed a preprocessing step to reduce
 noise and highlight the digits more clearly. One interesting part of this was applying
 a filtering technique in the frequency domain using the Fourier Transform.
@@ -59,7 +58,7 @@ Hu moments even if it appeared at a different angle or size. We extracted nine H
 moments and combined them with six shape features to create a 15-dimensional
 feature vector for each digit. With three digits per image, this resulted in a 45-
 dimensional feature vector for the full image.
-4. Implementation
+3. Implementation
 All the steps mentioned above were implemented as a modular pipeline in MATLAB.
 The preprocessing, segmentation, and feature extraction were handled inside
 the FeatureExtraction.m script. This script takes a CAPTCHA image and returns
@@ -79,4 +78,33 @@ with ground-truth labels and printed the overall accuracy.
 The Fourier filtering was implemented through helper functions like fourier_tool.m
 and spec_filter_image.m, which handled FFT transformation, masking of specific
 frequency bands, and conversion back to spatial domain. These functions
-played an important role in cleaning up background interference before segmentation
+played an important role in cleaning up background interference before segmentation.
+4. Results
+Our final AdaBoost classifier achieved 64% accuracy on the test set, which exceeded
+the required threshold of 50%. The classification time for all training images remained
+well below six minutes, fulfilling the runtime requirement. We observed
+that the model was particularly effective when digits were cleanly separated and
+well-formed. Most classification errors occurred when segmentation failed to isolate
+the digits correctly, especially in cases where digits were touching or heavily
+distorted. The use of Hu moments provided strong invariance to rotation and scale,
+while the shape descriptors added spatial context and size information. Fourier filtering
+contributed significantly to reducing background interference and improved
+segmentation accuracy.
+5. Discussion
+Looking back at the project, our initial focus on preprocessing and segmentation
+proved essential. The decision to use frequency domain filtering early in the
+pipeline helped clean up visual clutter and gave us more reliable binary masks for
+the digits. The segmentation logic we implemented adapted well to different image
+structures, even though it was based on fairly simple rules. The hybrid feature set
+that is combining geometric shape properties with Hu moment invariants turned
+out to be a strong choice, especially considering we could not use any deep learning.
+We also found that limiting the tree depth in AdaBoost was helpful for keeping
+the model general without overfitting on specific digit shapes. The segmentation
+step still remains the most fragile part of the pipeline. In future improvements, we
+would explore more advanced methods for digit isolation, perhaps by using edge
+detection. Additionally, adding a basic digit alignment or normalization step could
+help reduce feature variability. Overall, our method demonstrates that classical
+techniques can still perform well in structured recognition problems when carefully
+combined. The solution is robust, modular, and performs within all required
+constraints.
+
